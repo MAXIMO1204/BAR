@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEDIDOS COCINA</title>
+   
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        H1{
+          text-align: center;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+            background-color: rgba(247, 84, 84, 0.938);
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .mesa {
+            cursor: pointer;
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            display: inline-block;
+            background-color: #0d73f8a8;
+            height: 40px;
+            font-size: 25px;
+            margin-left: 1.5%;
+            font-weight: bold;
+        }
+
+
+        #totalMesa {
+            margin-top: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        #totalGeneral {
+            font-size: 25px;
+            font-weight: bold;
+            text-align: center;
+        }
+       .imprimir{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>L' ARENA DI VERONA</h1>
+    <h1>PEDIDOS DE COCINA</h1>
+
+
+    <div id="mesas">
+        <div class="mesa" onclick="seleccionarMesa(1)">Mesa 1</div>
+        <div class="mesa" onclick="seleccionarMesa(2)">Mesa 2</div>
+        <div class="mesa" onclick="seleccionarMesa(3)">Mesa 3</div>
+        <div class="mesa" onclick="seleccionarMesa(4)">Mesa 4</div>
+        <div class="mesa" onclick="seleccionarMesa(5)">Mesa 5</div>
+        <div class="mesa" onclick="seleccionarMesa(6)">Mesa 6</div>
+        <div class="mesa" onclick="seleccionarMesa(7)">Mesa 7</div>
+        <div class="mesa" onclick="seleccionarMesa(8)">Mesa 8</div>
+        <div class="mesa" onclick="seleccionarMesa(9)">Mesa 9</div>
+        <div class="mesa" onclick="seleccionarMesa(10)">Mesa 10</div>
+               
+    </div>
+
+    <table id="tablaPedidos">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Detalle</th>
+            </tr>
+        </thead>
+        <tbody id="tbodyPedidos">
+        </tbody>
+    </table>
+    <button onclick="agregarPedido()">Agregar Pedido</button>
+    
+    <input type="button" value="Imprimir" class="printbutton" onclick="imprimirTabla()">
+
+    <script>
+       
+        let mesas = {
+            1: [],
+            2: [],
+            3: [],
+            4: [],
+            5: [],
+            6: [],
+            7: [],
+            8: [],
+            9: [],
+            10: []
+        };
+
+        let mesaSeleccionada = 1;
+
+        function actualizarTabla() {
+            const tbody = document.getElementById("tbodyPedidos");
+            tbody.innerHTML = "";
+
+            const pedidos = mesas[mesaSeleccionada];
+
+            pedidos.forEach(pedido => {
+                const fila = `<tr><td>${pedido.producto}</td><td>${pedido.detalle}</td></tr>`;
+                tbody.innerHTML += fila;
+            });
+
+            actualizarTotales();
+        }
+
+       
+
+        function agregarPedido() {
+            const producto = prompt("INGRESE PRODUCTO");
+            const detalle = prompt("INGRESE DETALLE");
+
+            mesas[mesaSeleccionada].push({ producto, detalle });
+            actualizarTabla();
+        }
+
+        function seleccionarMesa(mesa) {
+            mesaSeleccionada = mesa;
+            actualizarTabla();
+        }
+
+
+         // Función para imprimir
+function imprimirTabla() {
+    // Obtener el contenido de la tabla
+    var contenidoTabla = document.getElementById('tablaPedidos').outerHTML;
+
+    // Abrir una nueva ventana de impresión
+    var ventanaImpresion = window.open('', '');
+   
+    
+    // Escribir el contenido de la tabla en la ventana de impresión
+    ventanaImpresion.document.write("<h2>L' ARENA DI VERONA</h2>");
+    ventanaImpresion.document.write('<h2>PEDIDOS DE COMIDA</h2>');
+    ventanaImpresion.document.write('MESA: '+mesaSeleccionada);   
+    ventanaImpresion.document.write(contenidoTabla); 
+    
+    
+
+    // Cerrar el documento después de imprimir
+    ventanaImpresion.document.close();
+
+    // Iniciar el diálogo de impresión
+    ventanaImpresion.print();
+}
+
+    </script>
+
+   
+
+</body>
+</html>
+

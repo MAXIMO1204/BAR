@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L' ARENA DI VERONA</title>
+   
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        H1{
+          text-align: center;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+            background-color: aquamarine;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .mesa {
+            cursor: pointer;
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            display: inline-block;
+            background-color: #66ee27a8;
+            height: 40px;
+            font-size: 25px;
+            margin-left: 1.5%;
+            font-weight: bold;
+        }
+
+
+        #totalMesa {
+            margin-top: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        #totalGeneral {
+            font-size: 25px;
+            font-weight: bold;
+            text-align: center;
+        }
+       .imprimir{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>L' ARENA DI VERONA</h1>
+    <h1>Ordenes de Mesas</h1>
+
+
+    <div id="mesas">
+        <div class="mesa" onclick="seleccionarMesa(1)">Mesa 1</div>
+        <div class="mesa" onclick="seleccionarMesa(2)">Mesa 2</div>
+        <div class="mesa" onclick="seleccionarMesa(3)">Mesa 3</div>
+        <div class="mesa" onclick="seleccionarMesa(4)">Mesa 4</div>
+        <div class="mesa" onclick="seleccionarMesa(5)">Mesa 5</div>
+        <div class="mesa" onclick="seleccionarMesa(6)">Mesa 6</div>
+        <div class="mesa" onclick="seleccionarMesa(7)">Mesa 7</div>
+        <div class="mesa" onclick="seleccionarMesa(8)">Mesa 8</div>
+        <div class="mesa" onclick="seleccionarMesa(9)">Mesa 9</div>
+        <div class="mesa" onclick="seleccionarMesa(10)">Mesa 10</div>
+               
+    </div>
+
+    <table id="tablaPedidos">
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Producto</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody id="tbodyPedidos">
+        </tbody>
+    </table>
+    <button onclick="agregarPedido()">Agregar Pedido</button>
+    <div id="totalMesa"></div>
+    <div id="totalGeneral"></div>
+    <input type="button" value="Imprimir" class="printbutton" onclick="imprimirTabla()">
+
+    <script>
+       
+        let mesas = {
+            1: [],
+            2: [],
+            3: [],
+            4: [],
+            5: [],
+            6: [],
+            7: [],
+            8: [],
+            9: [],
+            10: []
+        };
+
+        let mesaSeleccionada = 1;
+
+        function actualizarTabla() {
+            const tbody = document.getElementById("tbodyPedidos");
+            tbody.innerHTML = "";
+
+            const pedidos = mesas[mesaSeleccionada];
+
+            pedidos.forEach(pedido => {
+                const fila = `<tr><td>${pedido.cliente}</td><td>${pedido.producto}</td><td>${pedido.precio}</td></tr>`;
+                tbody.innerHTML += fila;
+            });
+
+            actualizarTotales();
+        }
+
+        function actualizarTotales() {
+            const totalMesaElement = document.getElementById("totalMesa");
+            const totalGeneralElement = document.getElementById("totalGeneral");
+
+            const pedidos = mesas[mesaSeleccionada];
+            let totalMesa = 0;
+
+            pedidos.forEach(pedido => {
+                totalMesa += parseFloat(pedido.precio);
+            });
+
+            totalMesaElement.innerHTML = `Total Mesa ${mesaSeleccionada}: $${totalMesa.toFixed(2)}`;
+
+            let totalGeneral = 0;
+            Object.values(mesas).forEach(pedidosMesa => {
+                pedidosMesa.forEach(pedido => {
+                    totalGeneral += parseFloat(pedido.precio);
+                });
+            });
+
+            totalGeneralElement.innerHTML = `Total General: $${totalGeneral.toFixed(2)}`;
+        }
+
+        function agregarPedido() {
+            const cliente = prompt("Ingrese el nombre del cliente:");
+            const producto = prompt("Ingrese el nombre del producto:");
+            const precio = prompt("Ingrese el precio del producto:");
+
+            mesas[mesaSeleccionada].push({ cliente, producto, precio });
+            actualizarTabla();
+        }
+
+        function seleccionarMesa(mesa) {
+            mesaSeleccionada = mesa;
+            actualizarTabla();
+        }
+
+
+         // Función para imprimir
+function imprimirTabla() {
+    // Obtener el contenido de la tabla
+    var contenidoTabla = document.getElementById('tablaPedidos').outerHTML;
+
+    // Abrir una nueva ventana de impresión
+    var ventanaImpresion = window.open('', '');
+   
+    
+    // Escribir el contenido de la tabla en la ventana de impresión
+    ventanaImpresion.document.write("<h2>L' ARENA DI VERONA</h2>");
+    ventanaImpresion.document.write('<h2>Tabla de Pedidos</h2>');
+    ventanaImpresion.document.write('MESA: '+mesaSeleccionada);   
+    ventanaImpresion.document.write(contenidoTabla); 
+    
+    
+
+    // Cerrar el documento después de imprimir
+    ventanaImpresion.document.close();
+
+    // Iniciar el diálogo de impresión
+    ventanaImpresion.print();
+}
+
+    </script>
+
+   
+
+</body>
+</html>
+
